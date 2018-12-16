@@ -1,29 +1,52 @@
 import "package:flutter/material.dart";
 import "package:flutter_app/template/base.dart";
+import "package:flutter_app/widget/avatar_box.dart";
+import "package:flutter_app/widget/dialog_clipper.dart";
 
 class ChartPage extends StatelessWidget {
   final List<Chart> chartList = [
-    Chart(avatar: "http://placehold.it/85x60", chartText: "很抱歉在这个时候打扰各位"),
-    Chart(avatar: "http://placehold.it/85x60", chartText: "好正经！"),
-    Chart(avatar: "http://placehold.it/85x60", chartText: "真有礼貌"),
-    Chart(avatar: "http://placehold.it/85x60", chartText: "但感觉不够亲近耶"),
-    Chart(avatar: "http://placehold.it/85x60", chartText: "但感觉不够亲近耶"),
-    Chart(avatar: "http://placehold.it/85x60", chartText: "但感觉不够亲近耶"),
-    Chart(avatar: "http://placehold.it/85x60", chartText: "但感觉不够亲近耶"),
-    Chart(avatar: "http://placehold.it/85x60", chartText: "但感觉不够亲近耶"),
-    Chart(avatar: "http://placehold.it/85x60", chartText: "但感觉不够亲近耶"),
+    Chart(avatar: "assets/images/cart_red.png", chartText: "很抱歉在这个时候打扰各位"),
+    Chart(avatar: "assets/images/cart_red.png", chartText: "好正经！"),
+    Chart(avatar: "assets/images/cart_red.png", chartText: "真有礼貌"),
+    Chart(avatar: "assets/images/cart_red.png", chartText: "但感觉不够亲近耶"),
+    Chart(avatar: "assets/images/cart_red.png", chartText: "但感觉不够亲近耶"),
+    Chart(avatar: "assets/images/cart_red.png", chartText: "但感觉不够亲近耶"),
+    Chart(avatar: "assets/images/cart_red.png", chartText: "但感觉不够亲近耶"),
+    Chart(avatar: "assets/images/cart_red.png", chartText: "但感觉不够亲近耶"),
+    Chart(avatar: "assets/images/cart_red.png", chartText: "但感觉不够亲近耶"),
   ];
+  final double topHeight = 100;
   Widget _buildAvatarList() {
     return Container(
       margin: EdgeInsets.fromLTRB(50, 70, 0, 0),
       child: Row(
         children: <Widget>[
-          Image.network("http://placehold.it/70x70"),
-          Image.network("http://placehold.it/70x70"),
-          Image.network("http://placehold.it/70x70"),
-          Image.network("http://placehold.it/70x70"),
-          Image.network("http://placehold.it/70x70"),
+          AvatarBox(
+            image: "assets/images/avatar_cat.jpg",
+          ),
+          AvatarBox(
+            image: "assets/images/avatar_hime.jpg",
+          ),
+          AvatarBox(
+            image: "assets/images/avatar_doctor.jpg",
+          ),
+          AvatarBox(
+            image: "assets/images/avatar_trger.jpg",
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildChartDialog(String text) {
+    return ClipPath(
+      clipper: DialogonalClipper(),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+        decoration: BoxDecoration(
+          color: Colors.black,
+        ),
+        child: Text(text),
       ),
     );
   }
@@ -34,17 +57,23 @@ class ChartPage extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Container(
-              child: Image.network(chart.avatar),
+              width: 100,
+              child: Image.asset(chart.avatar),
             ),
-            Text(chart.chartText)
+            _buildChartDialog(chart.chartText)
           ],
         ));
   }
 
   Widget _buildChartList() {
-    return ListView(
-      children: chartList.map((chart) => _buildChartRow(chart)).toList(),
-    );
+    return ListView(children: [
+      Container(
+        margin: EdgeInsets.only(top: topHeight),
+        child: Column(
+          children: chartList.map((chart) => _buildChartRow(chart)).toList(),
+        ),
+      )
+    ]);
   }
 
   @override
