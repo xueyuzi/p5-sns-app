@@ -3,7 +3,17 @@ import "package:flutter_app/template/base.dart";
 import "package:flutter_app/widget/avatar_box.dart";
 import "package:flutter_app/widget/dialog_clipper.dart";
 
-class ChartPage extends StatelessWidget {
+class ChartPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _ChartPage();
+  }
+}
+
+class _ChartPage extends State<ChartPage> {
+  final double topHeight = 100.0;
+  final double inputHeight = 45.0;
   final List<Chart> chartList = [
     Chart(
         avatar: "assets/images/cart_red.png",
@@ -21,29 +31,15 @@ class ChartPage extends StatelessWidget {
         avatar: "assets/images/cart_red.png",
         chartText: "但感觉不够亲近耶",
         chartDirection: Direction.Left),
-    Chart(
-        avatar: "assets/images/cart_red.png",
-        chartText: "但感觉不够亲近耶",
-        chartDirection: Direction.Left),
-    Chart(
-        avatar: "assets/images/cart_red.png",
-        chartText: "但感觉不够亲近耶",
-        chartDirection: Direction.Left),
-    Chart(
-        avatar: "assets/images/cart_red.png",
-        chartText: "但感觉不够亲近耶",
-        chartDirection: Direction.Left),
-    Chart(
-        avatar: "assets/images/cart_red.png",
-        chartText: "但感觉不够亲近耶",
-        chartDirection: Direction.Left),
-    Chart(
-        avatar: "assets/images/cart_red.png",
-        chartText: "但感觉不够亲近耶",
-        chartDirection: Direction.Right),
   ];
-  final double topHeight = 100.0;
-  final double inputHeight = 45.0;
+  void addChart(String text) {
+    setState(() {
+      chartList.add(
+        Chart(chartText: text, chartDirection: Direction.Right),
+      );
+    });
+  }
+
   Widget _buildAvatarList() {
     return Container(
       margin: EdgeInsets.fromLTRB(50, 70, 0, 0),
@@ -110,28 +106,41 @@ class ChartPage extends StatelessWidget {
   }
 
   Widget _buildChartInput() {
+    final formkey = GlobalKey<FormState>();
     return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Container(
-            height: inputHeight,
-            margin: EdgeInsets.fromLTRB(10, 0, 10, 5),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.black, width: 2)),
-            child: TextFormField(
-              enableInteractiveSelection: true,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.send, color: Colors.black),
-                  onPressed: () {debugPrint("send");},
+              height: inputHeight,
+              margin: EdgeInsets.fromLTRB(10, 0, 10, 5),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black, width: 2)),
+              child: Form(
+                key: formkey,
+                child: TextFormField(
+                  onSaved: (val) {
+                    debugPrint(val);
+                    addChart(val);
+                  },
+                  enableInteractiveSelection: true,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.send, color: Colors.black),
+                      onPressed: () {
+                        debugPrint("send");
+                        final form = formkey.currentState;
+                        if (form.validate()) {
+                          form.save();
+                        }
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          )
+              ))
         ]);
   }
 
